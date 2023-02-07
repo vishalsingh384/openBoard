@@ -4,6 +4,7 @@
 body{
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 .options-cont{
     height: 4rem;
@@ -47,6 +48,7 @@ body{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .pencil-tool-cont{
+    background-color: #f1f2f6;
     height: 5rem;
     width: 6.5rem;
     position: absolute;
@@ -58,7 +60,6 @@ body{
 
 }
 .pencil-width-cont{
-    background-color: #f1f2f6;
     height: 2rem;
     display: flex;
     justify-content: center;
@@ -69,7 +70,6 @@ body{
     width: 80%;
 }
 .pencil-color-cont{
-    background-color:#f1f2f6;
     height: calc(100% - 2rem);
     display: flex;
     justify-content: center;
