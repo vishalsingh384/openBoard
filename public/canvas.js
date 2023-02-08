@@ -6,13 +6,18 @@ let mouseIsDown=false;
 let allPencilColor=document.querySelectorAll(".pencil-color");
 let pencilWidthAdjust=document.querySelector(".pencil-input-width");
 let eraserWidthAdjust=document.querySelector(".eraser-input-width");
-
 let donwload=toolsCont.children[2];
+let redo=toolsCont.children[5];
+let undo=toolsCont.children[6];
 
 let pencilColor="red";
 let eraserColor="white";
 let pencilWidth=pencilWidthAdjust.value;
 let eraserWidth=eraserWidthAdjust.value;
+
+let undoRedoTracker=[]; //data
+let track=0; //represent index of the undoRedoTracker array
+
 
 //api
 let tool=canvas.getContext("2d");
@@ -56,6 +61,11 @@ canvas.addEventListener('mousemove',(e)=>{
 })
 canvas.addEventListener('mouseup',(e)=>{
     mouseIsDown=false;
+
+    //when mouseIsUp, that means a task is completed. That is why the instances will be saved from mouseup
+    let url=canvas.toDataURL();
+    undoRedoTracker.push(url);
+    track=undoRedoTracker.length-1;
 })
 function beginPath(obj){
     tool.beginPath();
@@ -105,3 +115,34 @@ donwload.addEventListener('click',(e)=>{
     anchorElem.download='boArd.jpg';
     anchorElem.click();
 })
+undo.addEventListener('click',(e)=>{
+    if(track>0)track--;
+
+    let data={
+        track,
+        undoRedoTracker
+    };
+
+    undoRedoCanvas(data);
+});
+redo.addEventListener('click',(e)=>{
+    if(track<undoRedoTracker.length-1)track++;
+
+    let data={
+        track:track,
+        undoRedoTracker:undoRedoTracker
+    };
+
+    undoRedoCanvas(data);
+})
+function undoRedoCanvas(obj){
+    console.log(obj);
+    let {track,undoRedoTracker}=obj;
+    console.log(track);
+    let url=undoRedoTracker[track];
+    let img=new Image();
+    img.src=url;
+    img.onload=(e)=>{
+        tool.drawImage(img,0,0,canvas.width,canvas.height);
+    }
+}
